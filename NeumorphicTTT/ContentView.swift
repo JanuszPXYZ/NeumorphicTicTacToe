@@ -14,6 +14,9 @@ struct ContentView: View {
     
     @State var toggled = Array(repeating: false, count: 9)
     @State private var moves: [Move?] = Array(repeating: nil, count: 9)
+    @State private var humanScore = 0
+    @State private var draw = 0
+    @State private var computerScore = 0
     @State private var isGameboardDisabled = false
     @State private var alertItem: AlertItem?
     var body: some View {
@@ -40,11 +43,13 @@ struct ContentView: View {
                                 
                                 if checkWinCondition(for: .human, in: moves) {
                                     print("Human wins")
+                                    humanScore += 1
                                     alertItem = AlertContext.humanWin
                                     return
                                 }
                                 if checkForDraw(in: moves) {
                                     print("Draw")
+                                    draw += 1
                                     alertItem = AlertContext.draw
                                     return
                                 }
@@ -58,11 +63,13 @@ struct ContentView: View {
                                     
                                     if checkWinCondition(for: .computer, in: moves) {
                                         print("Computer wins")
+                                        computerScore += 1
                                         alertItem = AlertContext.computerWin
                                         return
                                     }
                                     if checkForDraw(in: moves) {
                                         print("Draw")
+                                        draw += 1
                                         return
                                     }
                                 }
@@ -76,13 +83,32 @@ struct ContentView: View {
                           dismissButton: .default(alertItem.buttonTitle,
                                                   action: { resetGame() }))
                 }
-                VStack {
-                Text("Tic - Tac - Toe")
-                    .font(.system(size: 35, weight: .light, design: .monospaced))
-                    .foregroundColor(.white)
-                Spacer()
+                VStack(spacing: 20) {
+                    Text("Tic - Tac - Toe")
+                        .font(.system(size: 35, weight: .light, design: .monospaced))
+                        .foregroundColor(.white)
+                    Spacer()
+// MARK: Scoreboard here, uncomment to add to the VStack
+//                    VStack(alignment: .center, spacing: 5) {
+//                        Text("AI score: \(computerScore)")
+//                            .font(.system(.headline))
+//                            .foregroundColor(Color.white)
+//                        Text("Draws: \(draw)")
+//                            .font(.system(.headline))
+//                            .foregroundColor(Color.white)
+//                        Text("Human score: \(humanScore)")
+//                            .font(.system(.headline))
+//                            .foregroundColor(Color.white)
+//                    }
+//                    .frame(width: 200, height: 80)
+//                    .background(Color.black)
+//                    .cornerRadius(10.0)
+//                    .shadow(color: Color.darkStart, radius: 10, x: 10, y: 10)
+//                    .shadow(color: Color.darkEnd, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: -5.0, y: -5.0)
                 }
                 .padding(.top, 100)
+                .padding(.bottom, 100)
+                
             }
             .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
     }
